@@ -37,6 +37,7 @@ class SetupWiFiVC: UIViewController {
     tableView.delegate = self
     tableView.contentInset = UIEdgeInsets(top: 23, left: 10, bottom: 10, right: 10)
     view.addSubview(tableView)
+    tableView.separatorStyle = UITableViewCell.SeparatorStyle.none
   }
   
   private func viewsAutoLayout() {
@@ -171,20 +172,29 @@ extension SetupWiFiVC: UITableViewDelegate {
     guard section == 1 else { return UIView() }
     
     let button = UIButton(type: .system)
+    button.setTitleColor(.lightGray, for: .normal)    
     button.setTitle(self.tableView(tableView, titleForFooterInSection: section), for: .normal)
-    button.titleLabel?.font = UIFont.systemFont(ofSize: 25, weight: .light)
-    button.setTitleColor(.darkGray, for: .normal)
     button.addTarget(self, action: #selector(addWifi(_:)), for: .touchUpInside)
+
+    let lineLabel = UILabel()
+    lineLabel.backgroundColor = .lightGray
     
     let footerView = UIView()
     footerView.backgroundColor = .white
     footerView.addSubview(button)
+    footerView.addSubview(lineLabel)
     
     button.translatesAutoresizingMaskIntoConstraints = false
     button.topAnchor.constraint(equalTo: footerView.topAnchor, constant: 5).isActive = true
     button.leadingAnchor.constraint(equalTo: footerView.leadingAnchor, constant: 0).isActive = true
     button.trailingAnchor.constraint(equalTo: footerView.trailingAnchor, constant: -15).isActive = true
     button.bottomAnchor.constraint(equalTo: footerView.bottomAnchor, constant: -10).isActive = true
+    
+    lineLabel.translatesAutoresizingMaskIntoConstraints = false
+    lineLabel.topAnchor.constraint(equalTo: button.bottomAnchor, constant: 2).isActive = true
+    lineLabel.centerXAnchor.constraint(equalTo: footerView.centerXAnchor).isActive = true
+    lineLabel.widthAnchor.constraint(equalTo: footerView.widthAnchor, constant: -10).isActive = true
+    lineLabel.heightAnchor.constraint(equalToConstant: 1).isActive = true
     
     return footerView
   }
