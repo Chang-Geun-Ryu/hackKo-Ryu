@@ -13,7 +13,7 @@ class TodoCollectionViewCell: UICollectionViewCell {
   static let cellSize: CGFloat = 30
   static let cellCount: Int = 6
   
-  private let tableView = UITableView()
+  let tableView = UITableView()
   
   
   var locationTodoInfo: LocationTodoInfo?
@@ -67,7 +67,9 @@ extension TodoCollectionViewCell: UITableViewDataSource {
     let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
     
     if indexPath.row == 0 {
-      cell.textLabel?.text = title ?? "제목"
+      let texts = title?.split(separator: ",").reduce("위치: ") { $0 + String($1) + " "}
+      
+      cell.textLabel?.text = texts ?? "제목"
       return cell
     } else if indexPath.row == 6 {
       cell.textLabel?.text = "•••"
@@ -76,8 +78,9 @@ extension TodoCollectionViewCell: UITableViewDataSource {
     }
     
     cell.textLabel?.alpha = 0.8
+    print("locationTodoInfo?.todoList[indexPath.row - 1].todo: \(locationTodoInfo?.todoList[indexPath.row - 1].todo)")
     cell.textLabel?.text = locationTodoInfo?.todoList[indexPath.row - 1].todo ?? "Todo"
-    
+    cell.textLabel?.font = UIFont.systemFont(ofSize: 15, weight: .light)
     
     return cell
   }

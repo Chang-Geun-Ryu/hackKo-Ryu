@@ -65,7 +65,7 @@ final class MainVC: UIViewController {
     
     locationManager.allowsBackgroundLocationUpdates = true
     locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation
-    locationManager.distanceFilter = 1//10_000.0                                 //
+    locationManager.distanceFilter = 1
     locationManager.startUpdatingLocation()
     locationManager.startMonitoringSignificantLocationChanges()
     
@@ -74,7 +74,8 @@ final class MainVC: UIViewController {
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     
-    
+    print("viewWillAppear")
+    collectionView.reloadData()
   }
   
   // view setting
@@ -182,9 +183,10 @@ extension MainVC: UICollectionViewDataSource {
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
     let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TodoCollectionViewCell.identifier, for: indexPath) as! TodoCollectionViewCell
     
+    print("cellForItemAt : \(indexPath.item)")
     cell.locationTodoInfo = MainVC.localTodoList[indexPath.item]
     cell.title = MainVC.localTodoList[indexPath.item].getUsingList()
-//    cell.
+    cell.tableView.reloadData()
     return cell
   }
 }
@@ -200,15 +202,27 @@ extension MainVC: UICollectionViewDelegate {
   }
   
   func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+    if indexPath.item % 2 == 0 {
+      cell.layer.transform = CATransform3DTranslate(CATransform3DIdentity, -500, 10, 0)
+    } else {
+      cell.layer.transform = CATransform3DTranslate(CATransform3DIdentity, 500, 10, 0)
+    }
+    cell.alpha = 0
     
+    UIView.animate(withDuration: 0.3, delay: TimeInterval(Double(indexPath.item) * 0.2), options: [], animations: {
+      cell.alpha = 9
+      cell.layer.transform = CATransform3DIdentity
+    }, completion: nil)
   }
 }
 
 extension MainVC: FlexibleLayoutDelegate {
   func collectionView(_ collectionView: UICollectionView, heightForPhotoAtIndexPath indexPath: IndexPath) -> CGFloat {
     if MainVC.localTodoList[indexPath.item].todoList.count < 7 {
+      print((CGFloat(MainVC.localTodoList[indexPath.item].todoList.count + 1) * TodoCollectionViewCell.cellSize + 10))
       return (CGFloat(MainVC.localTodoList[indexPath.item].todoList.count + 1) * TodoCollectionViewCell.cellSize + 10)
     }
+    print((CGFloat(7) * TodoCollectionViewCell.cellSize + 10))
     return (CGFloat(7) * TodoCollectionViewCell.cellSize + 10)
   }
 }
