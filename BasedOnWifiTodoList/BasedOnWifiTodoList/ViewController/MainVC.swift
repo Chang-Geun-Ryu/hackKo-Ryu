@@ -78,6 +78,8 @@ final class MainVC: UIViewController {
   }
   
   // view setting
+    
+    var margin: CGFloat = 10
   private func viewsAutoLayout() {
     
     collectionView.translatesAutoresizingMaskIntoConstraints = false
@@ -87,8 +89,9 @@ final class MainVC: UIViewController {
     collectionView.bottomAnchor.constraint(equalTo: todoListUpButton.topAnchor).isActive = true
     
     todoListUpButton.translatesAutoresizingMaskIntoConstraints = false
-    todoListUpButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 15).isActive = true
-    todoListUpButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -15).isActive = true
+    // FIXME: - 여기여기
+    todoListUpButton.leadingAnchor.constraint(equalTo: collectionView.leadingAnchor, constant: 12).isActive = true
+    todoListUpButton.trailingAnchor.constraint(equalTo: collectionView.trailingAnchor, constant: -12).isActive = true
     todoListUpButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
     todoListUpButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
     
@@ -104,22 +107,18 @@ final class MainVC: UIViewController {
     collectionView.backgroundColor = .white
     collectionView.dataSource = self
     collectionView.delegate = self
-    collectionView.contentInset = UIEdgeInsets(top: 23, left: 10, bottom: 10, right: 10)
+    collectionView.contentInset = UIEdgeInsets(top: 23, left: margin, bottom: margin, right: margin)
     collectionView.register(TodoCollectionViewCell.self, forCellWithReuseIdentifier: TodoCollectionViewCell.identifier)
     view.addSubview(collectionView)
     
-    todoListUpButton.setTitle("Todo List Up", for: .normal)
-    todoListUpButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 30)
-    todoListUpButton.setTitleColor(.black, for: .normal)
-    todoListUpButton.layer.borderWidth = 1
-    todoListUpButton.layer.borderColor = UIColor.darkGray.cgColor
+    todoListUpButton.setImage(UIImage(named: "textBox"), for: .normal)
     todoListUpButton.addTarget(self, action: #selector(showTodoViewControl(_:)), for: .touchUpInside)
     view.addSubview(todoListUpButton)
     
   }
   
   private func setupNavigationItem() {
-    navigationItem.title = "배고파"
+    navigationItem.title = "Wifi Memo"
   }
   
   private func searchMethod() {
