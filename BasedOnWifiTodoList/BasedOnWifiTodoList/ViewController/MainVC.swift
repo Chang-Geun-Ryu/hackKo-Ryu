@@ -11,7 +11,7 @@ import CoreLocation
 
 final class MainVC: UIViewController {
   
-  private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: FlexibleLayout())
+  private var collectionView: UICollectionView!  //= UICollectionView(frame: .zero, collectionViewLayout: FlexibleLayout())
   private let searchController = UISearchController(searchResultsController: nil)
   private let todoListUpButton = UIButton(type: .custom)
   
@@ -30,9 +30,9 @@ final class MainVC: UIViewController {
     super.viewDidLoad()
     view.backgroundColor = .white
     
-    viewsConfigure()
-    searchMethod()
-    viewsAutoLayout()
+//    viewsConfigure()
+//    searchMethod()
+//    viewsAutoLayout()
     
     locationManager.delegate = self
     checkAuthorizationStatus()
@@ -73,7 +73,19 @@ final class MainVC: UIViewController {
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     
-    collectionView.reloadData()
+    collectionView = UICollectionView(frame: .zero, collectionViewLayout: FlexibleLayout())
+    
+    viewsConfigure()
+    searchMethod()
+    viewsAutoLayout()
+    
+//    if let flecibleLayout = collectionView.collectionViewLayout as? FlexibleLayout {
+//      flecibleLayout.invalidateLayout()
+//    }
+//    
+//    collectionView.collectionViewLayout.invalidateLayout()
+//    collectionView.reloadData()
+    
   }
   
   // view setting
@@ -155,9 +167,6 @@ final class MainVC: UIViewController {
   
   @objc private func showTodoViewControl(_ sender: UIButton) {
     let memoVC = MemoViewController()
-//    memoVC.reservatingWiFisAlarm = localTodoList[indexPath.item].reservatingWiFisAlarm
-//    memoVC.locationToDoInfo
-//    memoVC.locationToDoInfo = MainVC.localTodoList
     navigationController?.pushViewController(memoVC, animated: true)
   }
   
@@ -168,7 +177,6 @@ final class MainVC: UIViewController {
         if wifi.wifiBSSID == bssid { return true }
       }
     }
-    print("aa")
     return false
   }
   
@@ -182,7 +190,7 @@ extension MainVC: UICollectionViewDataSource {
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
     let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TodoCollectionViewCell.identifier, for: indexPath) as! TodoCollectionViewCell
     
-    print("cellForItemAt : \(indexPath.item)")
+//    print("cellForItemAt : \(indexPath.item)")
     cell.locationTodoInfo = MainVC.localTodoList[indexPath.item]
     cell.title = MainVC.localTodoList[indexPath.item].getUsingList()
     cell.tableView.reloadData()
@@ -221,7 +229,7 @@ extension MainVC: FlexibleLayoutDelegate {
       print((CGFloat(MainVC.localTodoList[indexPath.item].todoList.count + 1) * TodoCollectionViewCell.cellSize + 10))
       return (CGFloat(MainVC.localTodoList[indexPath.item].todoList.count + 1) * TodoCollectionViewCell.cellSize + 10)
     }
-    print((CGFloat(7) * TodoCollectionViewCell.cellSize + 10))
+    print("FlexibleLayoutDelegate: ",(CGFloat(7) * TodoCollectionViewCell.cellSize + 10))
     return (CGFloat(7) * TodoCollectionViewCell.cellSize + 10)
   }
 }
