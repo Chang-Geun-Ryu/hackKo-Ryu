@@ -21,7 +21,6 @@ class ContentsCell: UITableViewCell {
         addSubview(checkBoxButton)
         setupLayout()
         configureObjects()
-        backgroundColor = .orange
         
     }
     
@@ -35,15 +34,12 @@ class ContentsCell: UITableViewCell {
     }
     
     private func configureObjects() {
-        // FIXME: - 이미지로 변경
-        checkBoxButton.setTitle("□", for: .normal)
-        checkBoxButton.setTitleColor(#colorLiteral(red: 0.1764705926, green: 0.01176470611, blue: 0.5607843399, alpha: 1), for: .normal)
+
+        checkBoxButton.setImage(UIImage(named: "empty-check-box"), for: .normal)
         checkBoxButton.addTarget(self, action: #selector(checkButtonDidTapped), for: .touchUpInside)
-        checkBoxButton.titleLabel?.font = UIFont.systemFont(ofSize: 20)
         
         contentsTextfield.frame = CGRect(x: 0, y: 0, width: 300, height: 100)
         contentsTextfield.delegate = self
-//        contentsTextfield.font = UIFont.preferredFont(forTextStyle: .largeTitle)
         
     }
     
@@ -55,16 +51,16 @@ class ContentsCell: UITableViewCell {
     
     private func setupLayout() {
         let guide = safeAreaLayoutGuide
-        let margin: CGFloat = 0
+        let margin: CGFloat = 5
         checkBoxButton.translatesAutoresizingMaskIntoConstraints = false
-        checkBoxButton.leadingAnchor.constraint(equalTo: self.leadingAnchor,constant: margin).isActive = true
-        checkBoxButton.widthAnchor.constraint(equalToConstant: 30).isActive = true
-        checkBoxButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        checkBoxButton.leadingAnchor.constraint(equalTo: self.leadingAnchor,constant: margin * 2).isActive = true
+        checkBoxButton.widthAnchor.constraint(equalToConstant: 18).isActive = true
+        checkBoxButton.heightAnchor.constraint(equalToConstant: 18).isActive = true
         checkBoxButton.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
         
         contentsTextfield.translatesAutoresizingMaskIntoConstraints = false
         contentsTextfield.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
-        contentsTextfield.leadingAnchor.constraint(equalTo: checkBoxButton.trailingAnchor).isActive = true
+        contentsTextfield.leadingAnchor.constraint(equalTo: checkBoxButton.trailingAnchor, constant: margin).isActive = true
         
         contentsTextfield.widthAnchor.constraint(equalTo: guide.widthAnchor).isActive = true
         contentsTextfield.heightAnchor.constraint(equalToConstant: 100)
@@ -79,6 +75,7 @@ extension ContentsCell: UITextFieldDelegate {
             return false   }
         
         DataManager.shared.setTodoListTodo(th!,text)
+        
         
         return true
     }

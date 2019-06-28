@@ -18,8 +18,7 @@ class TitleCell: UITableViewCell {
         addSubview(memoTitleTextfield)
         setupLayout()
         memoTitleTextfield.placeholder = "Title"
-        memoTitleTextfield.font = UIFont.systemFont(ofSize: 30)
-        backgroundColor = .red
+        memoTitleTextfield.font = UIFont.systemFont(ofSize: 23)
         memoTitleTextfield.delegate = self
     }
     
@@ -36,7 +35,6 @@ class TitleCell: UITableViewCell {
         memoTitleTextfield.heightAnchor.constraint(equalTo:self.heightAnchor).isActive = true
         
     }
-    
 }
 
 extension TitleCell: UITextFieldDelegate {

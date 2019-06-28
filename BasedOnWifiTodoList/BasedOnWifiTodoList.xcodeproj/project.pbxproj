@@ -25,6 +25,7 @@
 		420CA15222C51E18008FB88D /* BottomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 420CA15122C51E18008FB88D /* BottomView.swift */; };
 		420CA15422C51E31008FB88D /* MemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 420CA15322C51E31008FB88D /* MemoViewController.swift */; };
 		420CA15622C51E69008FB88D /* CellType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 420CA15522C51E69008FB88D /* CellType.swift */; };
+		420CA15922C5CC96008FB88D /* Video.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 420CA15822C5C9D0008FB88D /* Video.mp4 */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -50,6 +51,7 @@
 		420CA15322C51E31008FB88D /* MemoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MemoViewController.swift; sourceTree = "<group>"; };
 		420CA15522C51E69008FB88D /* CellType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CellType.swift; sourceTree = "<group>"; };
 		420CA15722C59FA3008FB88D /* BasedOnWifiTodoList.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = BasedOnWifiTodoList.entitlements; sourceTree = "<group>"; };
+		420CA15822C5C9D0008FB88D /* Video.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = Video.mp4; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -125,6 +127,7 @@
 		420CA13B22C35676008FB88D /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				420CA15822C5C9D0008FB88D /* Video.mp4 */,
 				420CA15522C51E69008FB88D /* CellType.swift */,
 				420CA13F22C3744C008FB88D /* TodoList.swift */,
 			);
@@ -213,6 +216,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				420CA15922C5CC96008FB88D /* Video.mp4 in Resources */,
 				420CA13022C353AD008FB88D /* LaunchScreen.storyboard in Resources */,
 				420CA12D22C353AD008FB88D /* Assets.xcassets in Resources */,
 				420CA12B22C353AC008FB88D /* Main.storyboard in Resources */,

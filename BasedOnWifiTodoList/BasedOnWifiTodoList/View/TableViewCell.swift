@@ -24,7 +24,7 @@ class ContentCell: UITableViewCell {
     }
     
     private func configure() {
-        contentTextfield.text = "□  "
+        
     }
     
     private func setupLayout() {

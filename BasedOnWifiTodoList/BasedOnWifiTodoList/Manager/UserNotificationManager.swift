@@ -10,6 +10,7 @@ import UIKit
 import UserNotifications
 import SystemConfiguration.CaptiveNetwork
 
+
 final class UNNotificationManager: NSObject {
   
   private let center = UNUserNotificationCenter.current()
@@ -24,7 +25,11 @@ final class UNNotificationManager: NSObject {
       }
       self.setupNotificationCategories()
     }
+    
+    
   }
+  
+  
   
 //  func getNotificationSettings(with completionHandler: @escaping (Bool) -> Void) {
 //    center.getNotificationSettings {
@@ -47,7 +52,7 @@ final class UNNotificationManager: NSObject {
   func setupNotificationCategories() {
     let repeatAction = UNNotificationAction(
       identifier: "Action",
-      title: "Repeat",
+      title: "확인",
       options: []
     )
     let basicCategory = UNNotificationCategory(
@@ -100,7 +105,7 @@ final class UNNotificationManager: NSObject {
     let content = UNMutableNotificationContent()
     content.categoryIdentifier = "Category"//Identifier.anotherCategory
     content.title = NSString.localizedUserNotificationString(forKey: title, arguments: nil)
-    content.body = NSString.localizedUserNotificationString(forKey: "Alarm fired", arguments: nil)
+    content.body = NSString.localizedUserNotificationString(forKey: "정아 일정 확인 해!!!", arguments: nil)
     
     if #available(iOS 12.0, *) {
       content.sound = .defaultCritical
@@ -116,10 +121,11 @@ final class UNNotificationManager: NSObject {
     content.badge = 1 // or nil
     
     // Image
-    if let imageUrl = Bundle.main.url(forResource: "cat", withExtension: "jpeg") {
+    if let imageUrl = Bundle.main.url(forResource: "Video", withExtension: "mp4") {
       let attachment = try! UNNotificationAttachment(identifier: "attachmentImage", url: imageUrl)
       
       content.attachments = [attachment]
+      print("imageUrl")
     }
     
     // Audio : 5MB

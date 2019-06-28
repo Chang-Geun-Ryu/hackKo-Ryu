@@ -13,7 +13,7 @@ class SetupWiFiVC: UIViewController {
   private let wifiAlarmSwitch = UISwitch()
   private let tableView = UITableView()
 //  var registedWifis: [WifiInfoList] = MainVC.registedWifis
-  var reservatingWiFisAlarm: [String]?
+  var reservatingWiFisAlarm: [WifiInfoList]?
   private var isButtonClick = false
   private let notiManger = UNNotificationManager()
   
@@ -24,14 +24,20 @@ class SetupWiFiVC: UIViewController {
     viewsAutoLayout()
   }
   
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    
+    reservatingWiFisAlarm = MainVC.localTodoList[MainVC.indexLocalTodoList].reservatingWiFisAlarm
+  }
+  
   private func viewsConfigure() {
-//    tableView.sectionHeaderHeight = 50
     tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
     tableView.rowHeight = 40
     tableView.dataSource = self
     tableView.delegate = self
     tableView.contentInset = UIEdgeInsets(top: 23, left: 10, bottom: 10, right: 10)
     view.addSubview(tableView)
+    tableView.separatorStyle = UITableViewCell.SeparatorStyle.none
   }
   
   private func viewsAutoLayout() {
@@ -43,7 +49,7 @@ class SetupWiFiVC: UIViewController {
   }
   
   private func setupNavigationItem() {
-    navigationItem.title = "wifi setting"
+    navigationItem.title = "Setting"
     
     let backButton = UIBarButtonItem(title: "< Back", style: .plain, target: self, action: #selector(dismissSetupWiFiView(_:)))
     backButton.tintColor = UIColor.darkGray
@@ -51,6 +57,11 @@ class SetupWiFiVC: UIViewController {
   }
   
   @objc private func dismissSetupWiFiView(_ sender: UIBarButtonItem) {
+    
+    if let wifiList =  reservatingWiFisAlarm {
+      MainVC.localTodoList[MainVC.indexLocalTodoList].reservatingWiFisAlarm = wifiList
+    }
+    
     navigationController?.popViewController(animated: true)
   }
   
@@ -76,7 +87,7 @@ class SetupWiFiVC: UIViewController {
     else { return print("get wifi Info fail")}
     
     guard let bssid = wifiInfo.bssid,
-    findSameWifiInfo(bssid: bssid)
+    findSameWifiInfo(bssid: bssid) == false
     else { return alertSameWifi() }
     
     let okAlert = UIAlertAction(title: "확인", style: .default) { (action) in
@@ -97,9 +108,9 @@ class SetupWiFiVC: UIViewController {
   
   private func findSameWifiInfo(bssid: String) -> Bool {
     for wifi in MainVC.registedWifis {
-      if wifi.wifiBSSID == bssid { return true }
+      if wifi.wifiBSSID == bssid { print(bssid); return true }
     }
-    
+    print("bssid 성공!: \(bssid)")
     return false
   }
 }
@@ -124,7 +135,7 @@ extension SetupWiFiVC: UITableViewDataSource {
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     if indexPath.section == 0 {
       let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
-      cell.textLabel?.text = " " + (reservatingWiFisAlarm?[indexPath.row] ?? "alarm #\(indexPath.row)")
+      cell.textLabel?.text = " " + (reservatingWiFisAlarm?[indexPath.row].anotherName ?? "alarm #\(indexPath.row)")
       
       return cell
       
@@ -161,20 +172,29 @@ extension SetupWiFiVC: UITableViewDelegate {
     guard section == 1 else { return UIView() }
     
     let button = UIButton(type: .system)
+    button.setTitleColor(.lightGray, for: .normal)    
     button.setTitle(self.tableView(tableView, titleForFooterInSection: section), for: .normal)
-    button.titleLabel?.font = UIFont.systemFont(ofSize: 25, weight: .light)
-    button.setTitleColor(.darkGray, for: .normal)
     button.addTarget(self, action: #selector(addWifi(_:)), for: .touchUpInside)
+
+    let lineLabel = UILabel()
+    lineLabel.backgroundColor = .lightGray
     
     let footerView = UIView()
     footerView.backgroundColor = .white
     footerView.addSubview(button)
+    footerView.addSubview(lineLabel)
     
     button.translatesAutoresizingMaskIntoConstraints = false
     button.topAnchor.constraint(equalTo: footerView.topAnchor, constant: 5).isActive = true
     button.leadingAnchor.constraint(equalTo: footerView.leadingAnchor, constant: 0).isActive = true
     button.trailingAnchor.constraint(equalTo: footerView.trailingAnchor, constant: -15).isActive = true
     button.bottomAnchor.constraint(equalTo: footerView.bottomAnchor, constant: -10).isActive = true
+    
+    lineLabel.translatesAutoresizingMaskIntoConstraints = false
+    lineLabel.topAnchor.constraint(equalTo: button.bottomAnchor, constant: 2).isActive = true
+    lineLabel.centerXAnchor.constraint(equalTo: footerView.centerXAnchor).isActive = true
+    lineLabel.widthAnchor.constraint(equalTo: footerView.widthAnchor, constant: -10).isActive = true
+    lineLabel.heightAnchor.constraint(equalToConstant: 1).isActive = true
     
     return footerView
   }
@@ -200,5 +220,18 @@ extension SetupWiFiVC: UITableViewDelegate {
       cell.alpha = 0.8
     }, completion: nil)
     
+  }
+  
+  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    
+//    if reservatingWiFisAlarm {
+    if reservatingWiFisAlarm == nil {
+      reservatingWiFisAlarm = [MainVC.registedWifis[indexPath.row]]
+    } else {
+      reservatingWiFisAlarm?.append(MainVC.registedWifis[indexPath.row])
+      
+//    }
+    }
+    tableView.reloadSections([0], with: .automatic)
   }
 }
