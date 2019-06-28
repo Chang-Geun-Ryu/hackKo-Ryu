@@ -12,7 +12,6 @@ class MemoViewController: UIViewController {
     
     let tableView = UITableView()
     let bottomView = BottomView()
-//  var reservatingWiFisAlarm: 
     var doneTodoList: [TodoList]?
     var todoList: [TodoList]?
     var locationToDoInfo: LocationTodoInfo? {
