@@ -48,7 +48,7 @@ class SetupWiFiVC: UIViewController {
   }
   
   private func setupNavigationItem() {
-    navigationItem.title = "wifi setting"
+    navigationItem.title = "Setting"
     
     let backButton = UIBarButtonItem(title: "< Back", style: .plain, target: self, action: #selector(dismissSetupWiFiView(_:)))
     backButton.tintColor = UIColor.darkGray

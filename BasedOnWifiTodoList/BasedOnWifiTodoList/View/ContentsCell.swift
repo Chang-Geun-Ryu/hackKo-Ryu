@@ -76,6 +76,7 @@ extension ContentsCell: UITextFieldDelegate {
         
         DataManager.shared.setTodoListTodo(th!,text)
         
+        
         return true
     }
 }

@@ -28,6 +28,7 @@ class MemoViewController: UIViewController {
         configureViews()
         configNotifications()
         autolayout()
+        setupNavigationItem()
 
     }
     
@@ -59,8 +60,19 @@ class MemoViewController: UIViewController {
     
     @objc private func reloadTableView(_ sender: Any) {
         self.tableView.reloadData()
-//        UIView.animate(withDuration: 1.5) {
-//        }
+    }
+    
+    private func setupNavigationItem() {
+        navigationItem.title = "Memo"
+        
+        let backButton = UIBarButtonItem(title: "< Back", style: .plain, target: self, action: #selector(dismissToDoView(_:)))
+        backButton.tintColor = UIColor.darkGray
+        navigationItem.leftBarButtonItem = backButton
+    }
+    
+    @objc private func dismissToDoView(_ sender: UIBarButtonItem) {
+        
+        navigationController?.popViewController(animated: true)
     }
     
     
@@ -85,8 +97,10 @@ class MemoViewController: UIViewController {
     }
   
   @objc private func showWifiSettingView(_ sender: UIButton) {
+    
+    
     let memoVC = SetupWiFiVC()
-    navigationController?.pushViewController(memoVC, animated: true)
+    navigationController?.pushViewController(memoVC, animated: true)    
   }
 }
 

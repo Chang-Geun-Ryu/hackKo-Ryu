@@ -31,7 +31,6 @@ final class MainVC: UIViewController {
     view.backgroundColor = .white
     
     viewsConfigure()
-    setupNavigationItem()
     searchMethod()
     viewsAutoLayout()
     
@@ -116,10 +115,6 @@ final class MainVC: UIViewController {
     todoListUpButton.addTarget(self, action: #selector(showTodoViewControl(_:)), for: .touchUpInside)
     view.addSubview(todoListUpButton)
     
-  }
-  
-  private func setupNavigationItem() {
-    navigationItem.title = "Wifi Memo"
   }
   
   private func searchMethod() {

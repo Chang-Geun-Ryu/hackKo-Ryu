@@ -11,7 +11,7 @@ import UIKit
 class BottomView: UIView {
     
     // FIXME: - 수정 된 시간설정
-    private var now: String {
+    var now: String {
         get {
             let df = DateFormatter()
             df.locale = Locale(identifier: "ko")
@@ -45,23 +45,22 @@ class BottomView: UIView {
         
         wifiButton.translatesAutoresizingMaskIntoConstraints = false
         wifiButton.setImage(UIImage(named: "wifi"), for: .normal)
-      
+        
         timeNowLabel.translatesAutoresizingMaskIntoConstraints = false
         timeNowLabel.text = "수정된 날짜 \(now)"
         timeNowLabel.textColor = .lightGray
         timeNowLabel.font = UIFont.systemFont(ofSize: 15)
-
+        
     }
     
     private func bottomItemsAutoLayout() {
-
+        
         let margin: CGFloat = 20
         
         NSLayoutConstraint.activate([
-
+            
             timeNowLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor),
             timeNowLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-//            timeNowLabel.trailingAnchor.constraint(equalTo: wifiButton.leadingAnchor),
             
             wifiButton.centerYAnchor.constraint(equalTo: self.centerYAnchor),
             wifiButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -margin),
@@ -72,6 +71,6 @@ class BottomView: UIView {
         
         
     }
-  
-  
+    
+    
 }
