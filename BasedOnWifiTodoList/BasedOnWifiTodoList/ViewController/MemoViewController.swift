@@ -24,8 +24,6 @@ class MemoViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-//        locationToDoInfo = [LocationTodoInfo(wifiSSID: "회사", wifiBSSID: "2sdsd", wifiSSIDData: "!!", todoList: ["일", "이", "삼", "사",].map { TodoList(todo: $0, complete: true) })
-        
         DataManager.shared.addTodoList(TodoList(todo: "일", complete: false))
         DataManager.shared.addTodoList(TodoList(todo: "이", complete: false))
         DataManager.shared.addTodoList(TodoList(todo: "삼", complete: false))
