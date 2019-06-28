@@ -18,7 +18,7 @@ class TitleCell: UITableViewCell {
         addSubview(memoTitleTextfield)
         setupLayout()
         memoTitleTextfield.placeholder = "Title"
-        memoTitleTextfield.font = UIFont.systemFont(ofSize: 40)
+        memoTitleTextfield.font = UIFont.systemFont(ofSize: 30)
         backgroundColor = .red
         memoTitleTextfield.delegate = self
     }
@@ -28,13 +28,12 @@ class TitleCell: UITableViewCell {
     }
     
     private func setupLayout() {
-        //let guide = safeAreaLayoutGuide
+
         memoTitleTextfield.translatesAutoresizingMaskIntoConstraints = false
         memoTitleTextfield.centerYAnchor.constraint(equalTo: self.centerYAnchor)
         memoTitleTextfield.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 10).isActive = true
         memoTitleTextfield.widthAnchor.constraint(equalTo: self.widthAnchor).isActive = true
         memoTitleTextfield.heightAnchor.constraint(equalTo:self.heightAnchor).isActive = true
-        //memoTitleTextfield.heightAnchor.constraint(equalToConstant: 150)
         
     }
     
@@ -47,8 +46,6 @@ extension TitleCell: UITextFieldDelegate {
         guard let text = textField.text else { return false }
         
         DataManager.shared.setTitle(text)
-        
-        
         
         return true
     }
