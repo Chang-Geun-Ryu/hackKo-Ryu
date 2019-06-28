@@ -109,6 +109,15 @@ class DataManager {
     todoList[th].complete = complete
   }
   
+  func setTotalTodoList(todoList: [TodoList]) {
+    self.todoList = todoList
+  }
+  
+  func getTotalTodoList() -> [TodoList] {
+  
+    return self.todoList
+  }
+  
   
   
   //////////////////////

@@ -17,18 +17,15 @@ class MemoViewController: UIViewController {
     var todoList: [TodoList]?
     var locationToDoInfo: LocationTodoInfo? {
         didSet {
-            self.doneTodoList = locationToDoInfo?.todoList.filter { $0.complete }
-            self.todoList = locationToDoInfo?.todoList.filter { !$0.complete }
+          guard let todoList = locationToDoInfo?.todoList else { return }
+          
+          DataManager.shared.setTotalTodoList(todoList: todoList)
         }
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        DataManager.shared.addTodoList(TodoList(todo: "일", complete: false))
-        DataManager.shared.addTodoList(TodoList(todo: "이", complete: false))
-        DataManager.shared.addTodoList(TodoList(todo: "삼", complete: false))
-        DataManager.shared.addTodoList(TodoList(todo: "사", complete: false))
-        
+      
         configureViews()
         configNotifications()
         autolayout()
