@@ -111,12 +111,12 @@
 		420CA13A22C35661008FB88D /* View */ = {
 			isa = PBXGroup;
 			children = (
-				420CA14A22C51E0A008FB88D /* AddListItemCell.swift */,
+				420CA13D22C369F9008FB88D /* TodoCollectionViewCell.swift */,
+				420CA14922C51E0A008FB88D /* TitleCell.swift */,
 				420CA14B22C51E0A008FB88D /* ContentsCell.swift */,
+				420CA14A22C51E0A008FB88D /* AddListItemCell.swift */,
 				420CA14722C51E09008FB88D /* DoneTaskCell.swift */,
 				420CA14822C51E09008FB88D /* TableViewCell.swift */,
-				420CA14922C51E0A008FB88D /* TitleCell.swift */,
-				420CA13D22C369F9008FB88D /* TodoCollectionViewCell.swift */,
 				420CA15122C51E18008FB88D /* BottomView.swift */,
 			);
 			path = View;
