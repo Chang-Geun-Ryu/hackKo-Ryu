@@ -13,7 +13,7 @@ class SetupWiFiVC: UIViewController {
   private let wifiAlarmSwitch = UISwitch()
   private let tableView = UITableView()
 //  var registedWifis: [WifiInfoList] = MainVC.registedWifis
-  var reservatingWiFisAlarm: [String]?
+  var reservatingWiFisAlarm: [WifiInfoList]?
   private var isButtonClick = false
   private let notiManger = UNNotificationManager()
   
@@ -24,8 +24,13 @@ class SetupWiFiVC: UIViewController {
     viewsAutoLayout()
   }
   
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    
+    reservatingWiFisAlarm = MainVC.localTodoList[MainVC.indexLocalTodoList].reservatingWiFisAlarm
+  }
+  
   private func viewsConfigure() {
-//    tableView.sectionHeaderHeight = 50
     tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
     tableView.rowHeight = 40
     tableView.dataSource = self
@@ -51,6 +56,11 @@ class SetupWiFiVC: UIViewController {
   }
   
   @objc private func dismissSetupWiFiView(_ sender: UIBarButtonItem) {
+    
+    if let wifiList =  reservatingWiFisAlarm {
+      MainVC.localTodoList[MainVC.indexLocalTodoList].reservatingWiFisAlarm = wifiList
+    }
+    
     navigationController?.popViewController(animated: true)
   }
   
@@ -76,7 +86,7 @@ class SetupWiFiVC: UIViewController {
     else { return print("get wifi Info fail")}
     
     guard let bssid = wifiInfo.bssid,
-    findSameWifiInfo(bssid: bssid)
+    findSameWifiInfo(bssid: bssid) == false
     else { return alertSameWifi() }
     
     let okAlert = UIAlertAction(title: "확인", style: .default) { (action) in
@@ -97,9 +107,9 @@ class SetupWiFiVC: UIViewController {
   
   private func findSameWifiInfo(bssid: String) -> Bool {
     for wifi in MainVC.registedWifis {
-      if wifi.wifiBSSID == bssid { return true }
+      if wifi.wifiBSSID == bssid { print(bssid); return true }
     }
-    
+    print("bssid 성공!: \(bssid)")
     return false
   }
 }
@@ -124,7 +134,7 @@ extension SetupWiFiVC: UITableViewDataSource {
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     if indexPath.section == 0 {
       let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
-      cell.textLabel?.text = " " + (reservatingWiFisAlarm?[indexPath.row] ?? "alarm #\(indexPath.row)")
+      cell.textLabel?.text = " " + (reservatingWiFisAlarm?[indexPath.row].anotherName ?? "alarm #\(indexPath.row)")
       
       return cell
       
@@ -200,5 +210,18 @@ extension SetupWiFiVC: UITableViewDelegate {
       cell.alpha = 0.8
     }, completion: nil)
     
+  }
+  
+  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    
+//    if reservatingWiFisAlarm {
+    if reservatingWiFisAlarm == nil {
+      reservatingWiFisAlarm = [MainVC.registedWifis[indexPath.row]]
+    } else {
+      reservatingWiFisAlarm?.append(MainVC.registedWifis[indexPath.row])
+      
+//    }
+    }
+    tableView.reloadSections([0], with: .automatic)
   }
 }

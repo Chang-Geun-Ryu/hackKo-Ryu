@@ -17,7 +17,11 @@ final class MainVC: UIViewController {
   
   private let notiManger = UNNotificationManager()
   
-  private var localTodoList: [LocationTodoInfo] = sampleData() // test data
+  var locationManager = CLLocationManager()
+  
+  static var isBackgound = false
+  static var indexLocalTodoList = 0
+  static var localTodoList: [LocationTodoInfo] = sampleData() // test data
   static var registedWifis: [WifiInfoList] = sampleWifis()
   
   private var lastRequestDate = Date()
@@ -30,6 +34,47 @@ final class MainVC: UIViewController {
     setupNavigationItem()
     searchMethod()
     viewsAutoLayout()
+    
+    locationManager.delegate = self
+    checkAuthorizationStatus()
+  }
+  
+  func checkAuthorizationStatus() {
+    print("checkAuthorizationStatus")
+    switch CLLocationManager.authorizationStatus() {
+    case .notDetermined:
+      print("notDetermined")
+      locationManager.requestAlwaysAuthorization()
+    case .restricted, .denied:
+      // Disable location features
+      print("a")
+      break
+    case .authorizedWhenInUse:
+      fallthrough
+    case .authorizedAlways:
+      print("startingUpdatingLocation")
+      startingUpdatingLocation()
+      break
+    @unknown default: break
+    }
+  }
+  
+  func startingUpdatingLocation() {
+    let status = CLLocationManager.authorizationStatus()
+    guard status == .authorizedAlways || status == .authorizedWhenInUse, CLLocationManager.locationServicesEnabled() else { return }
+    
+    locationManager.allowsBackgroundLocationUpdates = true
+    locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation
+    locationManager.distanceFilter = 1//10_000.0                                 //
+    locationManager.startUpdatingLocation()
+    locationManager.startMonitoringSignificantLocationChanges()
+    
+  }
+  
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    
+    
   }
   
   // view setting
@@ -55,6 +100,7 @@ final class MainVC: UIViewController {
       flecibleLayout.delegate = self
     }
     
+//    collectionView.select
     collectionView.backgroundColor = .white
     collectionView.dataSource = self
     collectionView.delegate = self
@@ -112,14 +158,18 @@ final class MainVC: UIViewController {
     let memoVC = MemoViewController()
 //    memoVC.reservatingWiFisAlarm = localTodoList[indexPath.item].reservatingWiFisAlarm
 //    memoVC.locationToDoInfo
+//    memoVC.locationToDoInfo = MainVC.localTodoList
     navigationController?.pushViewController(memoVC, animated: true)
   }
   
   private func findSameWifiInfo(bssid: String) -> Bool {
-    for wifi in MainVC.registedWifis {
-      if wifi.wifiBSSID == bssid { return true }
-    }
     
+    for list in MainVC.localTodoList {
+      for wifi in list.reservatingWiFisAlarm {
+        if wifi.wifiBSSID == bssid { return true }
+      }
+    }
+    print("aa")
     return false
   }
   
@@ -127,15 +177,15 @@ final class MainVC: UIViewController {
 
 extension MainVC: UICollectionViewDataSource {
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    return localTodoList.count
+    return MainVC.localTodoList.count
   }
   
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
     let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TodoCollectionViewCell.identifier, for: indexPath) as! TodoCollectionViewCell
     
-    cell.locationTodoInfo = localTodoList[indexPath.item]
-    cell.title = localTodoList[indexPath.item].getUsingList()
-    
+    cell.locationTodoInfo = MainVC.localTodoList[indexPath.item]
+    cell.title = MainVC.localTodoList[indexPath.item].getUsingList()
+//    cell.
     return cell
   }
 }
@@ -145,7 +195,8 @@ extension MainVC: UICollectionViewDelegate {
     //let wifiVC = SetupWiFiVC()
     let memoVC = MemoViewController()
 //    memoVC.reservatingWiFisAlarm = localTodoList[indexPath.item].reservatingWiFisAlarm
-    memoVC.locationToDoInfo = localTodoList[indexPath.item]
+    MainVC.indexLocalTodoList =  indexPath.row
+    memoVC.locationToDoInfo = MainVC.localTodoList[indexPath.item]
     navigationController?.pushViewController(memoVC, animated: true)
   }
   
@@ -156,8 +207,8 @@ extension MainVC: UICollectionViewDelegate {
 
 extension MainVC: FlexibleLayoutDelegate {
   func collectionView(_ collectionView: UICollectionView, heightForPhotoAtIndexPath indexPath: IndexPath) -> CGFloat {
-    if localTodoList[indexPath.item].todoList.count < 7 {
-      return (CGFloat(localTodoList[indexPath.item].todoList.count + 1) * TodoCollectionViewCell.cellSize + 10)
+    if MainVC.localTodoList[indexPath.item].todoList.count < 7 {
+      return (CGFloat(MainVC.localTodoList[indexPath.item].todoList.count + 1) * TodoCollectionViewCell.cellSize + 10)
     }
     return (CGFloat(7) * TodoCollectionViewCell.cellSize + 10)
   }
@@ -183,19 +234,22 @@ extension MainVC: CLLocationManagerDelegate {
   
   func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
     let current = locations.last!
-    if (abs(current.timestamp.timeIntervalSinceNow) < 1) {
+    print("locationManager")
+    if (abs(current.timestamp.timeIntervalSinceNow) < 1) , MainVC.isBackgound {
       let coordnate = current.coordinate
       
       print("coordnate: ", coordnate)
       
       let currentDate = Date()
       if abs(lastRequestDate.timeIntervalSince(currentDate)) > 10 {
+        print("timeIntervalSince")
         if let workInfo = notiManger.fetchNetworkInfo(),
           let ssid = workInfo.ssid,
           let bssid = workInfo.bssid,
-        findSameWifiInfo(bssid: bssid) == false {
+        findSameWifiInfo(bssid: bssid) {
           notiManger.triggerTimeIntervalNotification(with: ssid, timeInterval: 0.01)
           lastRequestDate = currentDate
+          print("triggerTimeIntervalNotification")
         }
       }
     }

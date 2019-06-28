@@ -35,6 +35,7 @@ class TodoCollectionViewCell: UICollectionViewCell {
   }
   
   private func setupTableView() {
+    tableView.backgroundColor = .clear
     tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
     tableView.dataSource = self
     tableView.rowHeight = TodoCollectionViewCell.cellSize

@@ -27,13 +27,13 @@ struct TodoList {
 }
 
 struct LocationTodoInfo {
-  var reservatingWiFisAlarm: [String]
+  var reservatingWiFisAlarm: [WifiInfoList]
   var isAlarm: Bool
   var todoList: [TodoList]
   
   func getUsingList() -> String {
     
-    return reservatingWiFisAlarm.reduce("") {$0 + $1 + ","}
+    return reservatingWiFisAlarm.reduce("") {$0 + $1.anotherName + ","}
   }
 }
 
@@ -47,13 +47,13 @@ struct NetworkInfo {
 func sampleData() -> [LocationTodoInfo] {
   var info: [LocationTodoInfo] = []
   
-  let firstLocal = LocationTodoInfo(reservatingWiFisAlarm: ["집"], isAlarm: true, todoList: [1,2,].map { TodoList(todo: "\($0)", complete: false) })
+  let firstLocal = LocationTodoInfo(reservatingWiFisAlarm: [WifiInfoList(anotherName: "집", wifiSSID: "1", wifiBSSID: "222", wifiSSIDData: "23123")], isAlarm: true, todoList: [1,2,].map { TodoList(todo: "\($0)", complete: false) })
   info.append(firstLocal)
   
-  let secondLocal = LocationTodoInfo(reservatingWiFisAlarm: ["어니언", "대림창고"], isAlarm: false, todoList: ["일", "이", "삼", "사", "오", "육", "칠", "팔"].map { TodoList(todo: $0, complete: false) })
+  let secondLocal = LocationTodoInfo(reservatingWiFisAlarm: [WifiInfoList(anotherName: "어니언", wifiSSID: "1", wifiBSSID: "222", wifiSSIDData: "23123"), WifiInfoList(anotherName: "대림창고", wifiSSID: "1", wifiBSSID: "222", wifiSSIDData: "23123")], isAlarm: false, todoList: ["일", "이", "삼", "사", "오", "육", "칠", "팔"].map { TodoList(todo: $0, complete: false) })
   info.append(secondLocal)
   
-  let thirdLocal = LocationTodoInfo(reservatingWiFisAlarm: ["회사"], isAlarm: false, todoList: [])
+  let thirdLocal = LocationTodoInfo(reservatingWiFisAlarm: [WifiInfoList(anotherName: "회사", wifiSSID: "1", wifiBSSID: "222", wifiSSIDData: "23123")], isAlarm: false, todoList: [])
   info.append(thirdLocal)
   
   return info

@@ -10,6 +10,7 @@ import UIKit
 import UserNotifications
 import SystemConfiguration.CaptiveNetwork
 
+
 final class UNNotificationManager: NSObject {
   
   private let center = UNUserNotificationCenter.current()
@@ -24,7 +25,11 @@ final class UNNotificationManager: NSObject {
       }
       self.setupNotificationCategories()
     }
+    
+    
   }
+  
+  
   
 //  func getNotificationSettings(with completionHandler: @escaping (Bool) -> Void) {
 //    center.getNotificationSettings {
