@@ -19,7 +19,6 @@ class DoneTaskCell: UITableViewCell {
         addSubview(checkBoxButton)
         configureObjects()
         setupLayout()
-        backgroundColor = .yellow
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -27,11 +26,10 @@ class DoneTaskCell: UITableViewCell {
     }
     
     private func configureObjects() {
-        // FIXME: - 이미지로 변경
-        checkBoxButton.setTitle("□", for: .normal)
-        checkBoxButton.setTitleColor(#colorLiteral(red: 0.1764705926, green: 0.01176470611, blue: 0.5607843399, alpha: 1), for: .normal)
+        checkBoxButton.setImage(UIImage(named: "check-box"), for: .normal)
         checkBoxButton.addTarget(self, action: #selector(checkButtonDidTapped), for: .touchUpInside)
-        checkBoxButton.titleLabel?.font = UIFont.systemFont(ofSize: 20)
+        
+        doneTaskTextfield.textColor = #colorLiteral(red: 0.458770752, green: 0.4588538408, blue: 0.4587655067, alpha: 1)
     }
     
     @objc func checkButtonDidTapped() {
@@ -39,20 +37,20 @@ class DoneTaskCell: UITableViewCell {
     }
     
     private func setupLayout() {
-        let guide = safeAreaLayoutGuide
-        let margin: CGFloat = 0
+//        let guide = safeAreaLayoutGuide
+        let margin: CGFloat = 5
         
         doneTaskTextfield.translatesAutoresizingMaskIntoConstraints = false
         doneTaskTextfield.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
-        doneTaskTextfield.leadingAnchor.constraint(equalTo: checkBoxButton.trailingAnchor).isActive = true
+        doneTaskTextfield.leadingAnchor.constraint(equalTo: checkBoxButton.trailingAnchor, constant: margin).isActive = true
         
-        doneTaskTextfield.widthAnchor.constraint(equalTo: guide.widthAnchor).isActive = true
+        doneTaskTextfield.widthAnchor.constraint(equalTo: self.widthAnchor).isActive = true
         doneTaskTextfield.heightAnchor.constraint(equalToConstant: 100)
         
         checkBoxButton.translatesAutoresizingMaskIntoConstraints = false
-        checkBoxButton.leadingAnchor.constraint(equalTo: self.leadingAnchor,constant: margin).isActive = true
-        checkBoxButton.widthAnchor.constraint(equalToConstant: 30).isActive = true
-        checkBoxButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        checkBoxButton.leadingAnchor.constraint(equalTo: self.leadingAnchor,constant: margin * 2).isActive = true
+        checkBoxButton.widthAnchor.constraint(equalToConstant: 18).isActive = true
+        checkBoxButton.heightAnchor.constraint(equalToConstant: 18).isActive = true
         checkBoxButton.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
         
     }

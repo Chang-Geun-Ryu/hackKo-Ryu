@@ -28,7 +28,6 @@ class MemoViewController: UIViewController {
         configureViews()
         configNotifications()
         autolayout()
-        
 
     }
     
@@ -40,15 +39,15 @@ class MemoViewController: UIViewController {
         
         tableView.dataSource = self
         tableView.delegate = self
+        
         tableView.register(TitleCell.self, forCellReuseIdentifier: "TitleCell")
         tableView.register(AddListItemCell.self, forCellReuseIdentifier: "AddListItemCell")
         tableView.register(ContentsCell.self, forCellReuseIdentifier: "ContentsCell")
         tableView.register(DoneTaskCell.self, forCellReuseIdentifier: "DoneTaskCell")
         
-        //tableView의 default height 값 설정
-        tableView.estimatedRowHeight = 60
+        tableView.rowHeight = 40 //tableView의 default height 값 설정
         tableView.allowsSelection = false
-        // FIXME: - seperate 어쩌고 없애기
+        tableView.separatorStyle = UITableViewCell.SeparatorStyle.none // seperate 선 안보이게
     }
     
     private func configNotifications() {
@@ -59,20 +58,19 @@ class MemoViewController: UIViewController {
     }
     
     @objc private func reloadTableView(_ sender: Any) {
-        print("haha")
-        UIView.animate(withDuration: 1.5) {
-            self.tableView.reloadData()
-        }
+        self.tableView.reloadData()
+//        UIView.animate(withDuration: 1.5) {
+//        }
     }
     
     
     private func autolayout() {
         
         let guide = view.safeAreaLayoutGuide
-        let margin: CGFloat = 30
+        let margin: CGFloat = 10
         
         tableView.translatesAutoresizingMaskIntoConstraints = false
-        tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: margin * 2).isActive = true
+        tableView.topAnchor.constraint(equalTo: guide.topAnchor, constant: margin).isActive = true
         tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: margin).isActive = true
         tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -margin).isActive = true
         
@@ -82,7 +80,7 @@ class MemoViewController: UIViewController {
         bottomView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
         bottomView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         bottomView.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
-        bottomView.heightAnchor.constraint(equalToConstant: view.frame.height / 5 ).isActive = true
+        bottomView.heightAnchor.constraint(equalToConstant: view.frame.height / 14 ).isActive = true
         
     }
   
@@ -117,7 +115,7 @@ extension MemoViewController: UITableViewDataSource {
         if CellType.title.rawValue == indexPath.section {
             let cell = tableView.dequeueReusableCell(withIdentifier: "TitleCell", for: indexPath) as! TitleCell
             cell.memoTitleTextfield.text = DataManager.shared.getTitle()
-            cell.heightAnchor.constraint(equalToConstant: 100).isActive = true
+            cell.heightAnchor.constraint(equalToConstant: 55).isActive = true
             return cell
         } else if CellType.contents.rawValue == indexPath.section {
             
@@ -128,6 +126,7 @@ extension MemoViewController: UITableViewDataSource {
             return cell
         }   else if CellType.addList.rawValue == indexPath.section{
             let cell = tableView.dequeueReusableCell(withIdentifier: "AddListItemCell", for: indexPath) as! AddListItemCell
+            cell.heightAnchor.constraint(equalToConstant: 50).isActive = true
             return cell
         } else {
            
@@ -148,11 +147,11 @@ extension MemoViewController: UITableViewDelegate {
     
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        if indexPath.section == 1 && (indexPath.row == 0 || indexPath.row == 1) {
+//        if indexPath.section == 1 && (indexPath.row == 0 || indexPath.row == 1) {
 //            cell.alpha = 0
 //            UIView.animate(withDuration: 1) {
 //                cell.alpha = 1
 //            }
-        }
+//        }
     }
 }
