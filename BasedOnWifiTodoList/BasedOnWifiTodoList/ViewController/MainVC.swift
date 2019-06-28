@@ -73,7 +73,6 @@ final class MainVC: UIViewController {
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     
-    print("viewWillAppear")
     collectionView.reloadData()
   }
   
@@ -111,7 +110,12 @@ final class MainVC: UIViewController {
     collectionView.register(TodoCollectionViewCell.self, forCellWithReuseIdentifier: TodoCollectionViewCell.identifier)
     view.addSubview(collectionView)
     
-    todoListUpButton.setImage(UIImage(named: "textBox"), for: .normal)
+//    todoListUpButton.setImage(UIImage(named: "takeanote"), for: .normal)
+    todoListUpButton.setTitle("+ Take a note...", for: .normal)
+    todoListUpButton.titleLabel?.alpha = 0.5
+    todoListUpButton.backgroundColor = #colorLiteral(red: 0.9489938617, green: 0.948990047, blue: 0.9532188773, alpha: 1)
+    todoListUpButton.layer.cornerRadius = 10
+    todoListUpButton.setTitleColor(UIColor.darkGray, for: .normal)
     todoListUpButton.addTarget(self, action: #selector(showTodoViewControl(_:)), for: .touchUpInside)
     view.addSubview(todoListUpButton)
     
