@@ -79,6 +79,7 @@ extension TodoCollectionViewCell: UITableViewDataSource {
     }
     
     cell.textLabel?.alpha = 0.8
+//    print("locationTodoInfo?.todoList[indexPath.row - 1].todo: \(locationTodoInfo?.todoList[indexPath.row - 1].todo)")
     cell.textLabel?.text = locationTodoInfo?.todoList[indexPath.row - 1].todo ?? "Todo"
     cell.textLabel?.font = UIFont.systemFont(ofSize: 15, weight: .light)
     

@@ -71,7 +71,8 @@ class MemoViewController: UIViewController {
     }
     
     @objc private func dismissToDoView(_ sender: UIBarButtonItem) {
-        
+      MainVC.localTodoList[MainVC.indexLocalTodoList].todoList = DataManager.shared.getTotalTodoList()
+      
         navigationController?.popViewController(animated: true)
     }
     
